@@ -6,4 +6,8 @@
 typedef struct {
 } World;
 
+void world_init(void);
+void world_update(void);
+void world_deinit(void);
+
 #endif
