@@ -1,9 +1,11 @@
 SOURCES+=src/main.c
 SOURCES+=src/world.c
-
-SOURCES+=thirdparty/lib/libraylib.a
+SOURCES+=src/systems/debug_info.c
 
 HEADERS+=src/world.h
+HEADERS+=src/systems/debug_info.h
+
+SOURCES+=thirdparty/lib/libraylib.a
 
 CFLAGS+=-I./thirdparty/include
 
