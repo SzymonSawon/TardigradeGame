@@ -1,20 +1,28 @@
 #include "sprite.h"
-// a
 
-void push_sprite(SpriteSystem *SpriteSystem, Sprite *sprite) {
-    SpriteSystem->sprites[SpriteSystem->currentSize] = sprite;
-    SpriteSystem->currentSize++;
-    TraceLog(LOG_INFO, "Sprite added successfully");
+void sprite_system_update(SpriteSystem *sys,
+                          ResourceManagerSystem *resource_manager) {
+    for (int i = 0; i < sys->sprites.count; i++) {
+        ResourceManager_Sprite sprite =
+            resource_manager->sprites.items[sys->sprites.items[i].sprite_index];
+        Rectangle target = {
+            .x = sys->sprites.items[i].position.x,
+            .y = sys->sprites.items[i].position.y,
+            .width = sprite.source_rect.width,
+            .height = sprite.source_rect.height,
+        };
+        TraceLog(LOG_INFO, "FOOBAR %d %d", (int)target.width,
+                 (int)target.height);
+        DrawTexturePro(
+            resource_manager->texture_files.items[sprite.texture_index].texture,
+            sprite.source_rect, target, (Vector2){0}, 0, WHITE);
+    }
+    TraceLog(LOG_DEBUG, "Sprite rendered");
+    sys->sprites.count = 0;
+    TraceLog(LOG_DEBUG, "Sprites removed");
 }
 
-void render_sprites(SpriteSystem *SpriteSystem) {
-    for (int i = 0; i < SpriteSystem->currentSize; i++) {
-        DrawTexture(SpriteSystem->sprites[i]->spritesheet,
-                    SpriteSystem->sprites[i]->position.x,
-                    SpriteSystem->sprites[i]->position.y, WHITE);
-    }
-    TraceLog(LOG_INFO, "Sprite rendered");
-    SpriteSystem->sprites[0] = '\0';
-    SpriteSystem->currentSize = 0;
-    TraceLog(LOG_INFO, "Sprites removed");
+void sprite_push(SpriteSystem *sys, Sprite_Info sprite) {
+    da_append(sys->sprites, sprite);
+    TraceLog(LOG_DEBUG, "Sprite added successfully");
 }

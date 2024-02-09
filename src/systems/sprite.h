@@ -2,21 +2,26 @@
 #define SPRITE_H_
 
 #include <raylib.h>
-#define spriteArraySize 10;
 
-typedef struct Sprite {
-    Texture2D spritesheet;
-    int width;
-    int height;
+#include "../utils/da.h"
+#include "resource_manager.h"
+
+typedef struct {
+    size_t sprite_index;
     Vector2 position;
-} Sprite;
+} Sprite_Info;
 
-typedef struct SpriteSystem {
-    Sprite *sprites[10];
-    int currentSize;
+typedef struct {
+    da_list(Sprite_Info);
+} Sprite_Infos;
+
+typedef struct {
+    Sprite_Infos sprites;
 } SpriteSystem;
 
-void push_sprite(SpriteSystem *SpriteSystem, Sprite *sprite);
-void render_sprites(SpriteSystem *SpriteSystem);
+void sprite_system_update(SpriteSystem *sys,
+                          ResourceManagerSystem *resource_manager);
+
+void sprite_push(SpriteSystem *sys, Sprite_Info sprite);
 
 #endif
