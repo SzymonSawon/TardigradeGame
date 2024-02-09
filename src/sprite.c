@@ -1,5 +1,5 @@
 #include "sprite.h"
-
+//a
 
 void PushSprite(SpriteSystem *SpriteSystem, Sprite *sprite){
   SpriteSystem->sprites[SpriteSystem->currentSize] = sprite;
