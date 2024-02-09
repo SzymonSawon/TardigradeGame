@@ -9,6 +9,7 @@
 typedef struct {
     DebugInfoSystem debug_info_system;
     ResourceManagerSystem resource_manager_system;
+    SpriteSystem sprite_system;
 } World;
 
 void world_init(World*);

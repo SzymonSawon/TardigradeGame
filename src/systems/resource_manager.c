@@ -71,10 +71,11 @@ size_t resource_manager_load_texture_file(ResourceManagerSystem* sys,
 }
 
 size_t resource_manager_get_sprite(ResourceManagerSystem* sys, char* name) {
-    for (size_t i = 0; i < sys->sprites.count; i++) {
+    for (size_t i = 1; i < sys->sprites.count; i++) {
         if (strcmp(sys->sprites.items[i].sprite_name, name) == 0) {
             return i;
         }
     }
+
     return SPRITE_NOT_FOUND;
 }

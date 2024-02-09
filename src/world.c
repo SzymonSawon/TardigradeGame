@@ -6,6 +6,8 @@ void world_init(World* world) {
     TraceLog(LOG_INFO, "Initializing World!");
     *world = (World){.debug_info_system = {.visible = false}};
     resource_manager_system_init(&world->resource_manager_system, "assets");
+    debug_info_system_init(&world->debug_info_system,
+                           &world->resource_manager_system);
 }
 
 void world_update(World* world) {
@@ -19,7 +21,10 @@ void world_update(World* world) {
         ClearBackground(RAYWHITE);
 
         // drawing systems
-        debug_info_system_update(&world->debug_info_system);
+        debug_info_system_update(&world->debug_info_system,
+                                 &world->sprite_system);
+        sprite_system_update(&world->sprite_system,
+                             &world->resource_manager_system);
     }
     EndDrawing();
 }
