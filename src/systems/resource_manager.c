@@ -36,8 +36,7 @@ void resource_manager_system_update(ResourceManagerSystem* sys) {
     }
 }
 
-void resource_manager_system_deinit(ResourceManagerSystem* sys,
-                                    char* assets_path) {
+void resource_manager_system_deinit(ResourceManagerSystem* sys) {
     TraceLog(LOG_INFO, "Deinitializing ResourceManagerSystem!");
     for (size_t i = 0; i < sys->texture_files.count; i++) {
         ResourceManager_TextureFile* file = &sys->texture_files.items[i];

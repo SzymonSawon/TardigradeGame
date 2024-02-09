@@ -37,8 +37,7 @@ void resource_manager_system_init(ResourceManagerSystem* sys,
 
 void resource_manager_system_update(ResourceManagerSystem* sys);
 
-void resource_manager_system_deinit(ResourceManagerSystem* sys,
-                                    char* assets_path);
+void resource_manager_system_deinit(ResourceManagerSystem* sys);
 
 size_t resource_manager_load_texture_file(ResourceManagerSystem* sys,
                                           char* filename);

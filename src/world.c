@@ -26,5 +26,5 @@ void world_update(World* world) {
 
 void world_deinit(World* world) {
     TraceLog(LOG_INFO, "Deinitializing World!");
-    resource_manager_system_init(&world->resource_manager_system, "assets");
+    resource_manager_system_deinit(&world->resource_manager_system);
 }
