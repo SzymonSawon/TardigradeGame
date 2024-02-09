@@ -1,5 +1,7 @@
 #include <raylib.h>
 
+#include "world.h"
+
 int main(void) {
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
@@ -7,18 +9,15 @@ int main(void) {
     InitWindow(screenWidth, screenHeight,
                "raylib [core] example - basic window");
 
+    World world = {0};
+    world_init(&world);
+
     SetTargetFPS(60);
     while (!WindowShouldClose()) {
-        BeginDrawing();
-
-        ClearBackground(RAYWHITE);
-
-        DrawText("Congrats! You created your first window!", 190, 200, 20,
-                 LIGHTGRAY);
-
-        EndDrawing();
+        world_update(&world);
     }
 
+    world_deinit(&world);
     CloseWindow();
 
     return 0;
