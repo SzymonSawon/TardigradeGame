@@ -8,14 +8,16 @@ int main(void) {
 
     InitWindow(screenWidth, screenHeight,
                "raylib [core] example - basic window");
-    world_init();
+
+    World world = {0};
+    world_init(&world);
 
     SetTargetFPS(60);
     while (!WindowShouldClose()) {
-        world_update();
+        world_update(&world);
     }
 
-    world_deinit();
+    world_deinit(&world);
     CloseWindow();
 
     return 0;

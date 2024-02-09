@@ -2,9 +2,12 @@
 
 #include <raylib.h>
 
-void world_init(void) { TraceLog(LOG_INFO, "Initializing World!"); }
+void world_init(World* world) {
+    TraceLog(LOG_INFO, "Initializing World!");
+    *world = (World){.debug_info_system = {.visible = false}};
+}
 
-void world_update(void) {
+void world_update(World* world) {
     {
         // updating systems
     }
@@ -12,10 +15,11 @@ void world_update(void) {
     BeginDrawing();
     {
         ClearBackground(RAYWHITE);
-        DrawText("Unnamed Tardigrade Game", 30, 20, 20, LIGHTGRAY);
+        
         // drawing systems
+        debug_info_system_update(&world->debug_info_system);
     }
     EndDrawing();
 }
 
-void world_deinit(void) { TraceLog(LOG_INFO, "Deinitializing World!"); }
+void world_deinit(World* world) { TraceLog(LOG_INFO, "Deinitializing World!"); }
