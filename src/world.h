@@ -2,6 +2,7 @@
 #define WORLD_H_
 
 #include <raylib.h>
+
 #include "systems/debug_info.h"
 
 typedef struct {

@@ -15,7 +15,7 @@ void world_update(World* world) {
     BeginDrawing();
     {
         ClearBackground(RAYWHITE);
-        
+
         // drawing systems
         debug_info_system_update(&world->debug_info_system);
     }
