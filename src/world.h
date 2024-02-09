@@ -1,10 +1,9 @@
-#ifndef WORLD_H
-#define WORLD_H
+#ifndef WORLD_H_
+#define WORLD_H_
 
-#include "raylib.h"
+#include <raylib.h>
 
-typedef struct World{
-
+typedef struct {
 } World;
 
 #endif

@@ -1,26 +1,25 @@
+#include <raylib.h>
 
-#include "raylib.h"
-
-int main(void)
-{
-    const int screenWidth = GetScreenWidth();;
+int main(void) {
+    const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    InitWindow(screenWidth, screenHeight,
+               "raylib [core] example - basic window");
 
     SetTargetFPS(60);
-    while (!WindowShouldClose())
-    {
+    while (!WindowShouldClose()) {
         BeginDrawing();
 
-            ClearBackground(RAYWHITE);
+        ClearBackground(RAYWHITE);
 
-            DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+        DrawText("Congrats! You created your first window!", 190, 200, 20,
+                 LIGHTGRAY);
 
         EndDrawing();
     }
 
-    CloseWindow(); 
+    CloseWindow();
 
     return 0;
 }
