@@ -4,20 +4,19 @@
 #include <raylib.h>
 #define spriteArraySize 10;
 
-typedef struct Sprite{
-  Texture2D spritesheet;
-  int width;
-  int height;
-  Vector2 position;
+typedef struct Sprite {
+    Texture2D spritesheet;
+    int width;
+    int height;
+    Vector2 position;
 } Sprite;
 
-typedef struct SpriteSystem{
-  Sprite *sprites[10];
-  int currentSize;
+typedef struct SpriteSystem {
+    Sprite *sprites[10];
+    int currentSize;
 } SpriteSystem;
 
 void PushSprite(SpriteSystem *SpriteSystem, Sprite *sprite);
 void RenderSprites(SpriteSystem *SpriteSystem);
 
 #endif
-
