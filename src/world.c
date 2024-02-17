@@ -14,36 +14,41 @@ void world_init(World* world) {
     };
     resource_manager_system_init(&world->resource_manager_system, "assets");
     debug_info_system_init(&world->debug_info_system,
-                           &world->resource_manager_system);
+                           &world->resource_manager_system,
+                           &world->physics_system);
 
     // Add some colliders for tests
     {
         PhysicsSystem_Collider c = {
+            .uuid = new_uuid(),
             .position = {.x = 60, .y = 40},
             .size = {.x = 20, .y = 30},
         };
-        da_append(world->physics_system.colliders, c);
+        ida_append(world->physics_system.colliders, c);
     }
     {
         PhysicsSystem_Collider c = {
+            .uuid = new_uuid(),
             .position = {.x = 100, .y = 40},
             .size = {.x = 20, .y = 30},
         };
-        da_append(world->physics_system.colliders, c);
+        ida_append(world->physics_system.colliders, c);
     }
     {
         PhysicsSystem_Collider c = {
+            .uuid = new_uuid(),
             .position = {.x = 40, .y = 140},
             .size = {.x = 60, .y = 20},
         };
-        da_append(world->physics_system.colliders, c);
+        ida_append(world->physics_system.colliders, c);
     }
     {
         PhysicsSystem_Collider c = {
+            .uuid = new_uuid(),
             .position = {.x = 100, .y = 140},
             .size = {.x = 60, .y = 20},
         };
-        da_append(world->physics_system.colliders, c);
+        ida_append(world->physics_system.colliders, c);
     }
 }
 

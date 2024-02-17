@@ -3,9 +3,10 @@
 
 #include <raylib.h>
 
-#include "../utils/da.h"
+#include "../utils/ida.h"
 
 typedef struct {
+    size_t uuid;
     Vector2 position;
     Vector2 velocity;
     Vector2 acceleration;
@@ -13,7 +14,7 @@ typedef struct {
 } PhysicsSystem_Collider;
 
 typedef struct {
-    da_list(PhysicsSystem_Collider);
+    ida_list(PhysicsSystem_Collider);
 } PhysicsSystem_Colliders;
 
 typedef struct {

@@ -9,10 +9,12 @@
 typedef struct {
     bool visible;
     size_t debug_sprite;
+    size_t debug_collider;
 } DebugInfoSystem;
 
 void debug_info_system_init(DebugInfoSystem* sys,
-                            ResourceManagerSystem* resource_manager);
+                            ResourceManagerSystem* resource_manager,
+                            PhysicsSystem* physics_system);
 
 void debug_info_system_update(DebugInfoSystem* sys, SpriteSystem* sprite_system,
                               PhysicsSystem* physics_system);
