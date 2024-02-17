@@ -37,11 +37,15 @@ void debug_info_system_update(DebugInfoSystem* sys, SpriteSystem* sprite_system,
                                   .position = (Vector2){.x = 20, .y = 40}});
         DrawRectangleLinesEx(physics_system->bounding_rect, 1, BLUE);
         for (size_t i = 0; i < physics_system->colliders.count; i++) {
+            Color c = GREEN;
+            if (physics_system->colliders.items[i].flags & PSCF_STATIC) c = RED;
+            if (physics_system->colliders.items[i].flags & PSCF_NOSOLID)
+                c = SKYBLUE;
+
             DrawRectangleLines(physics_system->colliders.items[i].position.x,
                                physics_system->colliders.items[i].position.y,
                                physics_system->colliders.items[i].size.x,
-                               physics_system->colliders.items[i].size.y,
-                               GREEN);
+                               physics_system->colliders.items[i].size.y, c);
             DrawText(
                 TextFormat("#%zu", physics_system->colliders.items[i].uuid),
                 physics_system->colliders.items[i].position.x,

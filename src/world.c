@@ -21,10 +21,17 @@ void world_init(World* world) {
     for (size_t i = 0; i < 64; i++) {
         PhysicsSystem_Collider c = {
             .uuid = new_uuid(),
-            .position = {.x = 10 * GetRandomValue(6, 40), .y = 10* GetRandomValue(3, 10)},
+            .position = {.x = 10 * GetRandomValue(6, 40),
+                         .y = 10 * GetRandomValue(3, 10)},
             .size = {.x = 10 * GetRandomValue(1, 3),
                      .y = 10 * GetRandomValue(1, 3)},
         };
+        if (GetRandomValue(1, 100) < 30) {
+            c.flags |= PSCF_NOGRAVITY | PSCF_STATIC;
+        }
+        if (GetRandomValue(1, 100) < 10) {
+            c.flags |= PSCF_NOSOLID;
+        }
         ida_append(world->physics_system.colliders, c);
     }
 }

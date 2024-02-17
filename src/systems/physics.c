@@ -18,6 +18,7 @@ void physics_system_update(PhysicsSystem* sys) {
 
     // apply gravity
     for (size_t i = 0; i < sys->colliders.count; i++) {
+        if (sys->colliders.items[i].flags & PSCF_NOGRAVITY) continue;
         sys->colliders.items[i].acceleration =
             Vector2Add(sys->colliders.items[i].acceleration, sys->gravity);
     }
@@ -48,9 +49,14 @@ void physics_system_update(PhysicsSystem* sys) {
                                *s);
             }
 
+            if (sys->colliders.items[i].flags & PSCF_NOSOLID ||
+                sys->colliders.items[i].flags & PSCF_STATIC)
+                continue;
+
             // resolve collisions based on velocity direction
             for (size_t j = 0; j < sys->colliders.count; j++) {
-                if (j == i) continue;
+                if (j == i || sys->colliders.items[j].flags & PSCF_NOSOLID)
+                    continue;
                 if (CheckCollisionRecs(rect(&sys->colliders.items[i]),
                                        rect(&sys->colliders.items[j]))) {
                     if (*comp(&sys->colliders.items[i].velocity, c) > 0) {

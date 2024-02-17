@@ -5,8 +5,16 @@
 
 #include "../utils/ida.h"
 
+typedef enum {
+    PSCF_DEFAULT = 0,
+    PSCF_NOGRAVITY = 1 << 0,
+    PSCF_NOSOLID = 1 << 1,
+    PSCF_STATIC = 1 << 2,
+} PhysicsSystem_ColliderFlags;
+
 typedef struct {
     size_t uuid;
+    size_t flags;
     Vector2 position;
     Vector2 velocity;
     Vector2 acceleration;
