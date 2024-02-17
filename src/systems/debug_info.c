@@ -42,15 +42,23 @@ void debug_info_system_update(DebugInfoSystem* sys, SpriteSystem* sprite_system,
                                physics_system->colliders.items[i].size.x,
                                physics_system->colliders.items[i].size.y,
                                GREEN);
+            DrawText(
+                TextFormat("#%zu", physics_system->colliders.items[i].uuid),
+                physics_system->colliders.items[i].position.x,
+                physics_system->colliders.items[i].position.y, 8, BLUE);
         }
 
         {  // have some fun with collider
             PhysicsSystem_Collider* c =
                 ida_find(physics_system->colliders, sys->debug_collider);
-            assert(c);
-
-            c->velocity = Vector2Scale(
-                Vector2Subtract(GetMousePosition(), c->position), 10);
+            if (c) {
+                c->velocity = Vector2Scale(
+                    Vector2Subtract(GetMousePosition(), c->position), 10);
+                if (IsKeyPressed(KEY_F2)) {
+                    ida_swap_pop(physics_system->colliders,
+                                 sys->debug_collider);
+                }
+            }
         }
     }
 }

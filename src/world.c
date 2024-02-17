@@ -18,35 +18,12 @@ void world_init(World* world) {
                            &world->physics_system);
 
     // Add some colliders for tests
-    {
+    for (size_t i = 0; i < 64; i++) {
         PhysicsSystem_Collider c = {
             .uuid = new_uuid(),
-            .position = {.x = 60, .y = 40},
-            .size = {.x = 20, .y = 30},
-        };
-        ida_append(world->physics_system.colliders, c);
-    }
-    {
-        PhysicsSystem_Collider c = {
-            .uuid = new_uuid(),
-            .position = {.x = 100, .y = 40},
-            .size = {.x = 20, .y = 30},
-        };
-        ida_append(world->physics_system.colliders, c);
-    }
-    {
-        PhysicsSystem_Collider c = {
-            .uuid = new_uuid(),
-            .position = {.x = 40, .y = 140},
-            .size = {.x = 60, .y = 20},
-        };
-        ida_append(world->physics_system.colliders, c);
-    }
-    {
-        PhysicsSystem_Collider c = {
-            .uuid = new_uuid(),
-            .position = {.x = 100, .y = 140},
-            .size = {.x = 60, .y = 20},
+            .position = {.x = 10 * GetRandomValue(6, 40), .y = 10* GetRandomValue(3, 10)},
+            .size = {.x = 10 * GetRandomValue(1, 3),
+                     .y = 10 * GetRandomValue(1, 3)},
         };
         ida_append(world->physics_system.colliders, c);
     }

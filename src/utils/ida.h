@@ -11,7 +11,7 @@ typedef struct ida_IndexEntry {
     struct ida_IndexEntry* next;
 } ida_IndexEntry;
 
-size_t new_uuid(void); 
+size_t new_uuid(void);
 
 static void _ida_insert_new_index(ida_IndexEntry* entries, size_t capacity,
                                   size_t uuid, size_t index) {
@@ -36,8 +36,26 @@ static size_t _ida_get_index_by_uuid(ida_IndexEntry* entries, size_t capacity,
         if (entry->uuid == uuid) {
             return entry->index;
         }
-    } while (entry->next);
+        entry = entry->next;
+    } while (entry);
     return INVALID_INDEX;
+}
+
+static void _ida_remove_entry_by_uuid(ida_IndexEntry* entries, size_t capacity,
+                                      size_t uuid) {
+    ida_IndexEntry* entry = &entries[uuid % capacity];
+    do {
+        if (entry->uuid == uuid) {
+            if (entry->next) {
+                ida_IndexEntry* next = entry->next;
+                *entry = *next;
+                free(next);
+            } else {
+                *entry = (ida_IndexEntry){0};
+            }
+        }
+        entry = entry->next;
+    } while (entry);
 }
 
 static void _ida_free_entries(ida_IndexEntry* entries, size_t capacity) {
@@ -74,6 +92,18 @@ static size_t _ida_temp;
 #define ida_find(arr, id)                                                  \
     (_ida_temp = _ida_get_index_by_uuid((arr)._index, (arr).capacity, id), \
      _ida_temp == INVALID_INDEX ? NULL : &(arr).items[_ida_temp])
+
+#define ida_swap_pop(arr, id)                                             \
+    do {                                                                  \
+        size_t _ida_i =                                                   \
+            _ida_get_index_by_uuid((arr)._index, (arr).capacity, id);     \
+        _ida_remove_entry_by_uuid((arr)._index, (arr).capacity, id);      \
+        _ida_remove_entry_by_uuid((arr)._index, (arr).capacity,           \
+                                  (arr).items[(arr).count - 1].uuid);     \
+        _ida_insert_new_index((arr)._index, (arr).capacity,               \
+                              (arr).items[(arr).count - 1].uuid, _ida_i); \
+        (arr).items[_ida_i] = (arr).items[--(arr).count];                 \
+    } while (0)
 
 #define ida_list(t)  \
     t* items;        \
