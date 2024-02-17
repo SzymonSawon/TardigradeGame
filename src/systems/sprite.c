@@ -11,8 +11,6 @@ void sprite_system_update(SpriteSystem *sys,
             .width = sprite.source_rect.width,
             .height = sprite.source_rect.height,
         };
-        TraceLog(LOG_INFO, "FOOBAR %d %d", (int)target.width,
-                 (int)target.height);
         DrawTexturePro(
             resource_manager->texture_files.items[sprite.texture_index].texture,
             sprite.source_rect, target, (Vector2){0}, 0, WHITE);

@@ -3,11 +3,13 @@ SOURCES+=src/world.c
 SOURCES+=src/systems/sprite.c
 SOURCES+=src/systems/debug_info.c
 SOURCES+=src/systems/resource_manager.c
+SOURCES+=src/systems/physics.c
 
 HEADERS+=src/world.h
 SOURCES+=src/systems/sprite.h
 HEADERS+=src/systems/debug_info.h
 HEADERS+=src/systems/resource_manager.h
+HEADERS+=src/systems/physics.h
 
 SOURCES+=thirdparty/lib/libraylib.a
 

@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 
+#include "physics.h"
 #include "sprite.h"
 
 typedef struct {
@@ -13,7 +14,7 @@ typedef struct {
 void debug_info_system_init(DebugInfoSystem* sys,
                             ResourceManagerSystem* resource_manager);
 
-void debug_info_system_update(DebugInfoSystem* sys,
-                              SpriteSystem* sprite_system);
+void debug_info_system_update(DebugInfoSystem* sys, SpriteSystem* sprite_system,
+                              PhysicsSystem* physics_system);
 
 #endif
