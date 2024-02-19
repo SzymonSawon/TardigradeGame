@@ -1,6 +1,9 @@
 #include "world.h"
 
 #include <raylib.h>
+#include "systems/player_control.h"
+#include "systems/resource_manager.h"
+#include "utils/ida.h"
 
 void world_init(World* world) {
     TraceLog(LOG_INFO, "Initializing World!");
@@ -34,6 +37,14 @@ void world_init(World* world) {
         }
         ida_append(world->physics_system.colliders, c);
     }
+
+    //player test
+    PlayerControlSystem_Player player;
+    player_init(&player, &world->resource_manager_system);
+    player.sprite.sprite_index = 3;
+    ida_append(world->player_system.players, player);
+    player_side_movement(&player);
+    player_jump(&player);
 }
 
 void world_update(World* world) {
@@ -41,6 +52,7 @@ void world_update(World* world) {
         // updating systems
         resource_manager_system_update(&world->resource_manager_system);
         physics_system_update(&world->physics_system);
+        player_control_system_update(&world->player_system, &world->sprite_system);
     }
 
     BeginDrawing();

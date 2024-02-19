@@ -13,7 +13,7 @@ typedef struct {
     ResourceManagerSystem resource_manager_system;
     SpriteSystem sprite_system;
     PhysicsSystem physics_system;
-    PlayerSystem player_system;
+    PlayerControlSystem player_system;
 } World;
 
 void world_init(World*);
