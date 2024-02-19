@@ -85,6 +85,9 @@ static void _ida_free_entries(ida_IndexEntry* entries, size_t capacity) {
             (arr).capacity *= 2;                                             \
         }                                                                    \
         (arr).items[(arr).count++] = (it);                                   \
+        _ida_insert_new_index((arr)._index, (arr).capacity,                  \
+                              (arr).items[(arr).count - 1].uuid,             \
+                              (arr).count - 1);                              \
     } while (0)
 
 static size_t _ida_temp;

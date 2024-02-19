@@ -5,6 +5,7 @@
 
 #include "systems/debug_info.h"
 #include "systems/physics.h"
+#include "systems/player_control.h"
 #include "systems/resource_manager.h"
 
 typedef struct {
@@ -12,6 +13,7 @@ typedef struct {
     ResourceManagerSystem resource_manager_system;
     SpriteSystem sprite_system;
     PhysicsSystem physics_system;
+    PlayerControlSystem player_system;
 } World;
 
 void world_init(World*);
