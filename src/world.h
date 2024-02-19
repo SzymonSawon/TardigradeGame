@@ -5,8 +5,8 @@
 
 #include "systems/debug_info.h"
 #include "systems/physics.h"
-#include "systems/resource_manager.h"
 #include "systems/player_control.h"
+#include "systems/resource_manager.h"
 
 typedef struct {
     DebugInfoSystem debug_info_system;
