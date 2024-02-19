@@ -9,17 +9,16 @@
 #include "sprite.h"
 
 typedef struct {
-    PhysicsSystem_Collider collider;
-    Sprite_Info sprite;
     size_t uuid;
+    size_t collider;
     enum {
-        LEFT,
-        RIGHT,
+        PSDPD_LEFT,
+        PCSPD_RIGHT,
     } direction;
     enum {
-        WALK,
-        JUMP,
-        DODGE,
+        PCSPS_WALK,
+        PCSPS_JUMP,
+        PCSPS_DODGE,
     } state;
     bool can_move;
 } PlayerControlSystem_Player;
@@ -30,13 +29,15 @@ typedef struct {
 
 typedef struct {
     PlayerControlSystem_Players players;
+    size_t player_sprite;
 } PlayerControlSystem;
 
-void player_side_movement(PlayerControlSystem_Player *player);
-void player_jump(PlayerControlSystem_Player *player);
-void player_init(PlayerControlSystem_Player *player,
-                 ResourceManagerSystem *resource_manager);
+PlayerControlSystem_Player player_create(PhysicsSystem *physics_system);
+
+void player_control_system_init(PlayerControlSystem *sys,
+                                ResourceManagerSystem *resource_manager);
 void player_control_system_update(PlayerControlSystem *sys,
-                                  SpriteSystem *sprite_system);
+                                  SpriteSystem *sprite_system,
+                                  PhysicsSystem *physics_system);
 
 #endif

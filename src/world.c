@@ -20,9 +20,11 @@ void world_init(World* world) {
     debug_info_system_init(&world->debug_info_system,
                            &world->resource_manager_system,
                            &world->physics_system);
+    player_control_system_init(&world->player_system,
+                               &world->resource_manager_system);
 
     // Add some colliders for tests
-    for (size_t i = 0; i < 64; i++) {
+    for (size_t i = 0; i < 16; i++) {
         PhysicsSystem_Collider c = {
             .uuid = new_uuid(),
             .position = {.x = 10 * GetRandomValue(6, 40),
@@ -37,24 +39,22 @@ void world_init(World* world) {
             c.flags |= PSCF_NOSOLID;
         }
         ida_append(world->physics_system.colliders, c);
+        assert(ida_find(world->physics_system.colliders, c.uuid));
     }
 
     // player test
-    PlayerControlSystem_Player player;
-    player_init(&player, &world->resource_manager_system);
-    player.sprite.sprite_index = 3;
+    PlayerControlSystem_Player player = player_create(&world->physics_system);
     ida_append(world->player_system.players, player);
-    player_side_movement(&player);
-    player_jump(&player);
 }
 
 void world_update(World* world) {
     {
         // updating systems
         resource_manager_system_update(&world->resource_manager_system);
-        physics_system_update(&world->physics_system);
         player_control_system_update(&world->player_system,
-                                     &world->sprite_system);
+                                     &world->sprite_system,
+                                     &world->physics_system);
+        physics_system_update(&world->physics_system);
     }
 
     BeginDrawing();

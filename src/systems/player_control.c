@@ -4,72 +4,77 @@
 
 #include "sprite.h"
 
-void player_init(PlayerControlSystem_Player *player,
-                 ResourceManagerSystem *resource_manager_system) {
-    player->direction = RIGHT;
-    player->state = WALK;
-    player->can_move = true;
+const float PLAYER_SPEED = 100;
+const float PLAYER_BREAKING = 0.8;
+const float PLAYER_JUMP = 100;
 
-    player->uuid = new_uuid();
+PlayerControlSystem_Player player_create(PhysicsSystem *physics_system) {
+    PhysicsSystem_Collider c = {
+        .uuid = new_uuid(),
+        .position = {40, 60},
+        .size = {48, 48},
+    };
+    ida_append(physics_system->colliders, c);
 
-    player->sprite.position = (Vector2){40, 60};
-    player->sprite.sprite_index = resource_manager_load_texture_file(
-        resource_manager_system, "sprites/meatchunk.png");
+    PlayerControlSystem_Player player = {
+        .direction = PCSPD_RIGHT,
+        .state = PCSPS_WALK,
+        .can_move = true,
+        .uuid = new_uuid(),
+        .collider = c.uuid,
+    };
 
-    player->collider.position = (Vector2){40, 60};
-    player->collider.velocity = (Vector2){1, 2};
-    player->collider.size = (Vector2){48, 48};
-    player->collider.acceleration = (Vector2){1, 1};
-    player->collider.flags = 0;
+    return player;
 }
 
-void player_side_movement(PlayerControlSystem_Player *player) {
+static void player_side_movement(PlayerControlSystem_Player *player,
+                                 PhysicsSystem_Collider *c) {
+    c->velocity.x *= PLAYER_BREAKING;
     if (IsKeyDown(KEY_A)) {
-        TraceLog(LOG_INFO, "PLAYER INITIATES LEFT MOVEMENT");
         if (player->can_move == true) {
-            player->state = WALK;
-            player->collider.position.x -= player->collider.velocity.x;
-            player->sprite.position.x -= player->collider.velocity.x;
+            player->state = PCSPS_WALK;
+            c->velocity.x = -PLAYER_SPEED;
         }
-        player->direction = LEFT;
-        TraceLog(LOG_INFO, "PLAYER SUCCEEDED LEFT MOVEMENT");
+        player->direction = PSDPD_LEFT;
     }
     if (IsKeyDown(KEY_D)) {
-        TraceLog(LOG_INFO, "PLAYER INITIATES RIGHT MOVEMENT");
         if (player->can_move == true) {
-            player->state = WALK;
-            player->collider.position.x += player->collider.velocity.x;
-            player->sprite.position.x += player->collider.velocity.x;
-            TraceLog(LOG_INFO, "PLAYER SUCCEEDED RIGHT MOVEMENT");
+            player->state = PCSPS_WALK;
+            c->velocity.x = PLAYER_SPEED;
         }
-        player->direction = RIGHT;
+        player->direction = PCSPD_RIGHT;
     }
 }
 
-void player_jump(PlayerControlSystem_Player *player) {
-    if (IsKeyDown(KEY_SPACE)) {
-        TraceLog(LOG_INFO, "PLAYER INITIATES JUMP");
+static void player_jump(PlayerControlSystem_Player *player,
+                        PhysicsSystem_Collider *c) {
+    if (IsKeyPressed(KEY_SPACE)) {
         if (player->can_move == true) {
-            player->state = JUMP;
-            player->collider.position.y += player->collider.velocity.y;
-            player->sprite.position.y += player->collider.velocity.y;
-            TraceLog(LOG_INFO, "PLAYER SUCCEEDED JUMP");
+            player->state = PCSPS_JUMP;
+            c->velocity.y = -PLAYER_JUMP;
         }
     }
+}
+
+void player_control_system_init(PlayerControlSystem *sys,
+                                ResourceManagerSystem *resource_manager) {
+    resource_manager_load_texture_file(resource_manager,
+                                       "sprites/meatchunk.png");
+    sys->player_sprite =
+        resource_manager_get_sprite(resource_manager, "sprites/meatchunk.png");
 }
 
 void player_control_system_update(PlayerControlSystem *sys,
-                                  SpriteSystem *sprite_system) {
+                                  SpriteSystem *sprite_system,
+                                  PhysicsSystem *physics_system) {
     for (size_t i = 0; i < sys->players.count; i++) {
-        sprite_push(
-            sprite_system,
-            (Sprite_Info){
-                .sprite_index = sys->players.items[i].sprite.sprite_index,
-                .position =
-                    (Vector2){.x = sys->players.items[i].sprite.position.x,
-                              .y = sys->players.items[i].sprite.position.y}});
-        sys->players.items[i].sprite.position = GetMousePosition();
-        player_side_movement(&sys->players.items[i]);
-        player_jump(&sys->players.items[i]);
+        PhysicsSystem_Collider *c =
+            ida_find(physics_system->colliders, sys->players.items[i].collider);
+        assert(c);
+        player_side_movement(&sys->players.items[i], c);
+        player_jump(&sys->players.items[i], c);
+        sprite_push(sprite_system,
+                    (Sprite_Info){.sprite_index = sys->player_sprite,
+                                  .position = c->position});
     }
 }
